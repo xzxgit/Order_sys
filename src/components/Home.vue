@@ -24,7 +24,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #home {
     background: url('../assets/pizza.jpg');
     height: 90vh;
