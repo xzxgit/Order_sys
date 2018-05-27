@@ -41,18 +41,43 @@
             </div>
         </div>
         <div class="form-group row">
-            <button type="button" class="btn btn-success btn-block">Add</button>
+            <button @click="addMenuItem" type="button" class="btn btn-success btn-block">Add</button>
         </div>
     </form>
 </template>
 
 <script>
+import axios from 'axios'
     export default {
         data(){
             return {
                 newPizza: {
-
+                    
                 }
+            }
+        },
+        methods: {
+            addMenuItem() {
+                console.log("aaa")
+
+                let item = {
+                    name: this.newPizza.name,
+                    description: this.newPizza.description,
+                    options: [
+                        {
+                            size: this.newPizza.size1,
+                            price: this.newPizza.price1
+                        },
+                        {
+                            size: this.newPizza.size2,
+                            price: this.newPizza.price2
+                        }
+                    ]
+                }
+                axios.post('/add', {"item": item})
+                .then((res)=>{
+                    console.log(res)
+                })
             }
         }
     }

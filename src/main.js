@@ -1,10 +1,13 @@
 import Vue from 'vue'
 import App from './App.vue'
 import VueRouter from 'vue-router'
+import axios from 'axios'
 
 import {routes} from './routes' 
+import mock from './mock'
 
-Vue.use(VueRouter)
+Vue.use(VueRouter, mock)
+// require('./mock.js') 
 
 const router = new VueRouter({
   routes,
