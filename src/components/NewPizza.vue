@@ -58,8 +58,6 @@ import axios from 'axios'
         },
         methods: {
             addMenuItem() {
-                console.log("aaa")
-
                 let item = {
                     name: this.newPizza.name,
                     description: this.newPizza.description,
@@ -74,10 +72,19 @@ import axios from 'axios'
                         }
                     ]
                 }
-                axios.post('/add', {"item": item})
-                .then((res)=>{
-                    console.log(res)
-                })
+                // fetch('http://localhost:5000/add', {
+                //     method: 'POST',
+                //     headers: {
+                //         'Content-type': 'application/json'
+                //     },
+                //     body: JSON.stringify(item)
+                // })
+                // .then(res=>{
+                //     for(let item in res){
+
+                //     }
+                // })
+                this.$store.commit("pushToMenuItems", item)
             }
         }
     }

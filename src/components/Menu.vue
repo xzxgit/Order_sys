@@ -38,7 +38,7 @@
                                     <span>{{item.quantily}}</span>
                                     <button @click="increaseQuantily(item)" class="btn btn-sm btn-light">+</button>
                                 </td>
-                                <td>{{item.name}}</td>
+                                <td>{{item.name}}{{item.size}}</td>
                                 <td>{{item.price * item.quantily}}</td>
                             </tr>
                         </tbody>
@@ -55,49 +55,19 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
     data: ()=>{
         return {
             baskets: [],
             basketText: "basket is empty!",
-            getMenuItems: {
-                1: {
-                'name': '榴莲pizza',
-                'description': '这是喜欢吃榴莲朋友的最佳选择',
-                'options': [{
-                    'size': 9,
-                    'price': 38
-                }, {
-                    'size': 12,
-                    'price': 48
-                }]
-                },
-                2: {
-                'name': '芝士pizza',
-                'description': '芝士杀手,浓浓的芝士丝, 食欲瞬间爆棚',
-                'options': [{
-                    'size': 9,
-                    'price': 38
-                }, {
-                    'size': 12,
-                    'price': 48
-                }]
-                },
-                3: {
-                'name': '夏威夷pizza',
-                'description': '众多人的默认选择',
-                'options': [{
-                    'size': 9,
-                    'price': 36
-                }, {
-                    'size': 12,
-                    'price': 46
-                }]
-                }
-            }
         }
     },
     computed: {
+        getMenuItems(){
+            // get data from vuex
+            return this.$store.state.menuItems
+        },
         total(){
             let totalPrice = 0;
             for(let index in this.baskets){
@@ -107,7 +77,16 @@ export default {
             return totalPrice
         }
     },
+    created(){
+        this.fetchData()
+    },
     methods: {
+        fetchData(){
+            axios.get('http://localhost:5000/menu')
+            .then(res=> {
+                this.$store.commit("setMenuItems", res.data)
+            })
+        },
         addToBasket(item, option){
             let basket = {
                 name: item.name,
@@ -117,7 +96,7 @@ export default {
             }
             if(this.baskets.length > 0){
                 let res = this.baskets.filter((basket)=>{
-                    return (basket.name == item.name && basket.price == option.price)
+                    return (basket.name == item.name) && (basket.price == option.price)
                 })
                 if(res != null && res.length > 0){
                     res[0].quantily ++;
