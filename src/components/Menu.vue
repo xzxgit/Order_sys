@@ -43,7 +43,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <p>Total Price:</p>
+                    <p>Total Price:{{total+ "RMB"}}</p>
                     <button class="btn btn-success btn-block">Submit</button>
                 </div>
                 <div v-else>
@@ -97,14 +97,36 @@ export default {
             }
         }
     },
+    computed: {
+        total(){
+            let totalPrice = 0;
+            for(let index in this.baskets){
+                let individualItem = this.baskets[index]
+                totalPrice += (individualItem.quantily * individualItem.price)
+            }
+            return totalPrice
+        }
+    },
     methods: {
         addToBasket(item, option){
-            this.baskets.push({
+            let basket = {
                 name: item.name,
                 size: option.size,
                 price: option.price,
                 quantily: 1
-            })
+            }
+            if(this.baskets.length > 0){
+                let res = this.baskets.filter((basket)=>{
+                    return (basket.name == item.name && basket.price == option.price)
+                })
+                if(res != null && res.length > 0){
+                    res[0].quantily ++;
+                } else {
+                    this.baskets.push(basket)
+                }
+            }else{
+                this.baskets.push(basket)
+            }
         },
         decreaseQuantily(item){
             item.quantily--
