@@ -31,7 +31,7 @@
         },
         methods: {
             onSubmit(){
-                
+                this.$router.push({name: 'homeLink'})
             }
         }
     }

@@ -7,7 +7,7 @@
                     <form @submit.prevent>
                         <div class="form-group text-center">
                             <label for="email"></label>
-                            <input type="emial" class="form-control" placeholder="Your Email" v-model="email">
+                            <input type="email" class="form-control" placeholder="Your Email" v-model="email">
                         </div>
                         <div class="form-group text-center">
                             <label for="password"></label>
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import axios from 'axios'
     export default {
         data: ()=>{
             return {
@@ -36,7 +37,15 @@
         },
         methods: {
             onSubmit(){
-                
+                if(this.password == this.confirmPassword){
+                    const formData = {
+                        email: this.email,
+                        password: this.password,
+                        confirmPassword: this.confirmPassword
+                    }
+                    //axios.post('')
+                    this.$router.push({name: 'loginLink'})
+                }
             }
         }
     }
